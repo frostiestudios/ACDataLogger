@@ -4,7 +4,10 @@ import sqlite3
 @route("/")
 def index():
     return template('pages/index')
-
+# Static Files (CSS)
+@route("/pages/<filename:path>")
+def static(filename):
+    return static_file(filename, root="pages/")
 #Lap Browser
 @route('/laps')
 def laps():

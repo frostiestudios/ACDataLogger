@@ -1,0 +1,21 @@
+h1 {
+    color: red;
+}
+th {
+    color: red;
+    font-size: 20px;
+    text-align: center;
+    text-overflow:inherit;
+}
+table {
+    border: 1px solid black;
+}
+td {
+    border: 1PX solid black;
+}
+tr {
+    background-color: lightblue;
+}
+tr:hover {
+    background-color: aquamarine;
+}

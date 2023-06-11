@@ -7,12 +7,19 @@ def format_time(time):
     return f"{minutes:02d}:{seconds:02d}"
 def format_speed(speed):
     return f"{int(speed)}"
+def format_text(data):
+    if isinstance(data, bytes):
+        return str(data, 'utf-8')
+    return str(data)
+
 def store_data(car_model, track, last_lap_time):
     conn = sqlite3.connect('sharedmemmanager.db')
     c = conn.cursor()
-    c.execute("INSERT INTO laps (lap_time, track, car_model) VALUES (?, ?, ?)", (last_lap_time, track, car_model))
+    c.execute("CREATE TABLE IF NOT EXISTS laps (lap_time TEXT, track TEXT, car_model TEXT)")
+    c.execute("INSERT INTO laps (lap_time, track, car_model) VALUES (?, ?, ?)",(format_text(last_lap_time), format_text(track).rstrip('\x00'), format_text(car_model).rstrip('\x00')))
     conn.commit()
     conn.close()
+
 def update_labels():
     global car_model, track, last_time, best_time, driver, speed, gear, rpm, current_time, distance, laps
 
@@ -23,6 +30,7 @@ def update_labels():
     if sm is not None:
         car_model = sm.Static.car_model
         track = sm.Static.track
+        print(car_model)
         #LAPS / RANGE
         new_laps = sm.Graphics.completed_lap   
         if new_laps != laps:
