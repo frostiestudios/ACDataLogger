@@ -11,7 +11,9 @@ db_file_path = os.path.join(script_directory, 'sharedmemmanager.db')
 template_dir = os.path.join(script_directory, 'pages')
 laps_templ = os.path.join(template_dir, 'laps.html')
 index_templ = os.path.join(template_dir, 'index.html')
+content_templ = os.path.join(template_dir, 'content.html')
 css = os.path.join(template_dir,'style.css')
+
 # Connect to the database using the absolute file path
 conn = sqlite3.connect(db_file_path)
 conn.close()
@@ -57,5 +59,11 @@ def laps():
 #Run
 @route('/more')
 def more():
+    return ("More Has Not Been Configured <a href='/'>Back</a>")
+@route('/media')
+def media():
+    return ("More Has Not Been Configured <a href='/'>Back</a>")
+@route('/content')
+def content():
     return ("More Has Not Been Configured <a href='/'>Back</a>")
 run(host=IPAddr,port=5159,reloader=True,debug=True)

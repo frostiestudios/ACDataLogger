@@ -1,3 +1,6 @@
+a:hover {
+    font-weight: bolder;
+}
 h1 {
     color: red;
 }
@@ -48,4 +51,8 @@ tr:hover {
 }
 .filter select {
     border: 0px solid black;
+}
+label {
+    color: peru;
+    font-weight: bolder;
 }
