@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lap Records</title>
+</head>
+<body>
+    <h1>Lap Records</h1>
+    <a href="/"><- back</a>
+
+    <form action="/laps" method="GET">
+        <label for="track-select">Select Track:</label>
+        <select id="track-select" name="track">
+            <option value="">All Tracks</option>
+            %for track in tracks:
+                <option value="{{track}}">{{track}}</option>
+            %end
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>
+                <form action="/laps" method="GET">
+                    <input type="hidden" name="track" value="{{request.query.track}}">
+                    <button type="submit" name="sort_by" value="lap_time">Time</button>
+                </form>
+            </th>
+            <th>
+                <form action="/laps" method="GET">
+                    <input type="hidden" name="track" value="{{request.query.track}}">
+                    <button type="submit" name="sort_by" value="track">Track</button>
+                </form>
+            </th>
+            <th>
+                <form action="/laps" method="GET">
+                    <input type="hidden" name="track" value="{{request.query.track}}">
+                    <button type="submit" name="sort_by" value="car_model">Car</button>
+                </form>
+            </th>
+        </tr>
+        %for row in rows:
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+
+            </tr>
+        %end
+    </table>
+</body>
+</html>

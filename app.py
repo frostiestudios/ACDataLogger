@@ -1,22 +1,57 @@
 from bottle import request, route, run, static_file, template
 import sqlite3
+import socket
+import os
+
+hostname = socket.gethostname()
+IPAddr = socket.gethostbyname(hostname)
+
+script_directory = os.path.dirname(os.path.abspath(__file__))
+db_file_path = os.path.join(script_directory, 'sharedmemmanager.db')
+template_dir = os.path.join(script_directory, 'pages')
+laps_templ = os.path.join(template_dir, 'laps.html')
+index_templ = os.path.join(template_dir, 'index.html')
+# Connect to the database using the absolute file path
+conn = sqlite3.connect(db_file_path)
+conn.close()
+print(IPAddr)
 #Index
 @route("/")
 def index():
-    return template('pages/index')
+    return template(index_templ)
 # Static Files (CSS)
 @route("/pages/<filename:path>")
 def static(filename):
-    return static_file(filename, root="pages/")
+    return static_file(filename, root=template_dir)
 #Lap Browser
 @route('/laps')
 def laps():
-    conn = sqlite3.connect('sharedmemmanager.db')
+    conn = sqlite3.connect(db_file_path)
     c = conn.cursor()
-    c.execute("SELECT lap_time, track, car_model FROM laps")
+    c.execute("SELECT DISTINCT track FROM laps")
+    tracks = [row[0] for row in c.fetchall()]
+    c.close()
+    
+    track = request.query.get('track')
+    sort_by = request.query.get('sort_by')
+    
+    query = "SELECT lap_time, track, car_model FROM laps"
+    params = ()
+    c = conn.cursor()
+    if track:
+        query = "SELECT lap_time, track, car_model FROM laps WHERE track=?"
+        params = (track,)
+    else:
+        query = "SELECT lap_time, track, car_model FROM laps"
+
+    if sort_by:
+        query += f" ORDER BY {sort_by}"
+
+    c.execute(query, params)
     result = c.fetchall()
     c.close()
-    output = template('pages/laprecords',rows=result)
+    
+    output = template(laps_templ,rows=result, tracks=tracks, request=request)
     return output
 #Run
-run(host='localhost',port=5159,reloader=True,debug=True)
+run(host=IPAddr,port=5159,reloader=True,debug=True)

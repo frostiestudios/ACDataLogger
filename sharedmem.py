@@ -1,6 +1,16 @@
 from pyaccsharedmemory import accSharedMemory
 from appJar import gui
 import sqlite3
+import os
+
+current_directory = os.getcwd()
+print(current_directory)
+script_directory = os.path.dirname(os.path.abspath(__file__))
+db_file_path = os.path.join(script_directory, 'sharedmemmanager.db')
+conn = sqlite3.connect(db_file_path)
+conn.close()
+
+
 def format_time(time):
     minutes = int(time // 60000)
     seconds = int((time // 1000) % 60)
@@ -12,11 +22,11 @@ def format_text(data):
         return str(data, 'utf-8')
     return str(data)
 
-def store_data(car_model, track, last_lap_time):
-    conn = sqlite3.connect('sharedmemmanager.db')
+def store_data(car_model, track, last_lap_time,driver):
+    conn = sqlite3.connect(db_file_path)
     c = conn.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS laps (lap_time TEXT, track TEXT, car_model TEXT)")
-    c.execute("INSERT INTO laps (lap_time, track, car_model) VALUES (?, ?, ?)",(format_text(last_lap_time), format_text(track).rstrip('\x00'), format_text(car_model).rstrip('\x00')))
+    c.execute("INSERT INTO laps (lap_time, track, car_model, driver) VALUES (?, ?, ?, ?)",(format_text(last_lap_time), format_text(track).rstrip('\x00'), format_text(car_model).rstrip('\x00'), driver))
     conn.commit()
     conn.close()
 
@@ -35,7 +45,7 @@ def update_labels():
         new_laps = sm.Graphics.completed_lap   
         if new_laps != laps:
             last_lap_time = format_time(sm.Graphics.last_time)
-            store_data(car_model,track,last_lap_time)
+            store_data(car_model,track,last_lap_time, driver)
         laps = new_laps     
         distance = sm.Graphics.distance_traveled
         valid_lap = sm.Graphics.is_valid_lap
