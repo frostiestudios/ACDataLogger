@@ -13,9 +13,23 @@ table {
 td {
     border: 1PX solid black;
 }
+th {
+    background-color: lightcoral;
+}
+th button {
+    background-color: aliceblue;
+    border: 1px solid black;
+}
+th button:hover {
+    border: 2px solid black;
+}
 tr {
     background-color: lightblue;
 }
 tr:hover {
     background-color: aquamarine;
+}
+.time{
+    background-color: antiquewhite;
+    width: max-content;
 }

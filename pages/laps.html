@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="/pages/style.css">
     <title>Lap Records</title>
 </head>
 <body>
     <h1>Lap Records</h1>
+    <p>Welcome to ac shared memory. This page shows you your completed lap times</p>
     <a href="/"><- back</a>
 
     <form action="/laps" method="GET">
@@ -41,10 +43,9 @@
         </tr>
         %for row in rows:
             <tr>
-                <td>{{row[0]}}</td>
+                <td class="time"><b>{{row[0]}}</b></td>
                 <td>{{row[1]}}</td>
                 <td>{{row[2]}}</td>
-
             </tr>
         %end
     </table>

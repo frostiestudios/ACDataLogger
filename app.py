@@ -11,6 +11,7 @@ db_file_path = os.path.join(script_directory, 'sharedmemmanager.db')
 template_dir = os.path.join(script_directory, 'pages')
 laps_templ = os.path.join(template_dir, 'laps.html')
 index_templ = os.path.join(template_dir, 'index.html')
+css = os.path.join(template_dir,'style.css')
 # Connect to the database using the absolute file path
 conn = sqlite3.connect(db_file_path)
 conn.close()
