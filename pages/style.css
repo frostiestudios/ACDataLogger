@@ -1,6 +1,9 @@
 h1 {
     color: red;
 }
+p {
+    width: 50%;
+}
 th {
     color: red;
     font-size: 20px;
@@ -9,12 +12,15 @@ th {
 }
 table {
     border: 1px solid black;
+    width: 100%;
+    border-collapse: collapse;
 }
 td {
     border: 1PX solid black;
 }
 th {
-    background-color: lightcoral;
+    background-color: #04AA6D;
+    color: white;
 }
 th button {
     background-color: aliceblue;
@@ -32,4 +38,14 @@ tr:hover {
 .time{
     background-color: antiquewhite;
     width: max-content;
+}
+.filter {
+    background-color: #0ae896;
+    border: 1px solid black;
+}
+.filter button {
+    border: 1px solid black;
+}
+.filter select {
+    border: 0px solid black;
 }

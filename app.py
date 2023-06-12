@@ -55,4 +55,7 @@ def laps():
     output = template(laps_templ,rows=result, tracks=tracks, request=request)
     return output
 #Run
+@route('/more')
+def more():
+    return ("More Has Not Been Configured <a href='/'>Back</a>")
 run(host=IPAddr,port=5159,reloader=True,debug=True)
