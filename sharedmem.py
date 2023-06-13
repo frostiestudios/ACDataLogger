@@ -14,7 +14,10 @@ conn.close()
 def format_time(time):
     minutes = int(time // 60000)
     seconds = int((time // 1000) % 60)
-    return f"{minutes:02d}:{seconds:02d}"
+    milliseconds = int(time % 1000)
+    print(seconds)
+    print(milliseconds)
+    return f"{minutes:02d}:{seconds:02d}.{milliseconds:03d}"
 def format_speed(speed):
     return f"{int(speed)}"
 def format_text(data):
