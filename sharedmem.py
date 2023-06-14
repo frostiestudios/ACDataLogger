@@ -22,14 +22,14 @@ def format_speed(speed):
     return f"{int(speed)}"
 def format_text(data):
     if isinstance(data, bytes):
-        return str(data, 'utf-8')
-    return str(data)
+        return str(data, 'utf-8').rstrip('\x00')
+    return str(data).rstrip('\x00')
 
 def store_data(car_model, track, last_lap_time,driver):
     conn = sqlite3.connect(db_file_path)
     c = conn.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS laps (lap_time TEXT, track TEXT, car_model TEXT)")
-    c.execute("INSERT INTO laps (lap_time, track, car_model, driver) VALUES (?, ?, ?, ?)",(format_text(last_lap_time), format_text(track).rstrip('\x00'), format_text(car_model).rstrip('\x00'), format_text(driver).rstrip('\x00')))
+    c.execute("INSERT INTO laps (lap_time, track, car_model, driver) VALUES (?, ?, ?, ?)",(format_text(last_lap_time), format_text(track), format_text(car_model), format_text(driver)))
     conn.commit()
     conn.close()
 
