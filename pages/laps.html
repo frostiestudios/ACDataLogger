@@ -40,12 +40,14 @@
                     <button type="submit" name="sort_by" value="car_model">Car</button>
                 </form>
             </th>
+            <th>Driver</th>
         </tr>
         %for row in rows:
             <tr>
                 <td class="time"><b>{{row[0]}}</b></td>
                 <td>{{row[1]}}</td>
                 <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
             </tr>
         %end
     </table>

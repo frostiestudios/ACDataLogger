@@ -38,14 +38,14 @@ def laps():
     track = request.query.get('track')
     sort_by = request.query.get('sort_by')
     
-    query = "SELECT lap_time, track, car_model FROM laps"
+    query = "SELECT lap_time, track, car_model, driver FROM laps"
     params = ()
     c = conn.cursor()
     if track:
-        query = "SELECT lap_time, track, car_model FROM laps WHERE track=?"
+        query = "SELECT lap_time, track, car_model, driver FROM laps WHERE track=?"
         params = (track,)
     else:
-        query = "SELECT lap_time, track, car_model FROM laps"
+        query = "SELECT lap_time, track, car_model, driver FROM laps"
 
     if sort_by:
         query += f" ORDER BY {sort_by}"
