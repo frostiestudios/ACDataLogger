@@ -21,11 +21,16 @@ print(IPAddr)
 #Index
 @route("/")
 def index():
-    return template(index_templ)
+    return static_file(index_templ, root=template_dir)
 # Static Files (CSS)
 @route("/pages/<filename:path>")
 def static(filename):
     return static_file(filename, root=template_dir)
+
+@route("/pages/images/<filename:path>")
+def static(filename):
+    return static_file(filename, root=images_dir)
+#Lap Browser
 #Lap Browser
 @route('/laps')
 def laps():
@@ -56,6 +61,7 @@ def laps():
     
     output = template(laps_templ,rows=result, tracks=tracks, request=request)
     return output
+
 #Run
 @route('/more')
 def more():
@@ -64,6 +70,6 @@ def more():
 def media():
     return ("More Has Not Been Configured <a href='/'>Back</a>")
 @route('/content')
-def content():
+def content(): 
     return ("More Has Not Been Configured <a href='/'>Back</a>")
 run(host=IPAddr,port=5159,reloader=True,debug=True)

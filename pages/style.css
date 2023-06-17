@@ -1,6 +1,3 @@
-a:hover {
-    font-weight: bolder;
-}
 h1 {
     color: red;
 }
@@ -53,6 +50,9 @@ tr:hover {
     border: 0px solid black;
 }
 label {
-    color: peru;
+    color: black;
     font-weight: bolder;
+}
+a {
+    background-color: blue;
 }
