@@ -1,4 +1,4 @@
-from bottle import request, route, run, static_file, template
+from bottle import request, route, run, static_file, template, redirect
 import sqlite3
 import socket
 import os
