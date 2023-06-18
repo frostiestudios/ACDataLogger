@@ -1,24 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@400;500&family=Overpass:ital,wght@0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap');
+
 h1 {
+    font-family: 'Overpass', sans-serif;
     color: red;
 }
 p {
+    font-family: 'Overpass';
     width: 50%;
 }
 th {
+    font-family: 'Overpass';
     color: red;
     font-size: 20px;
     text-align: center;
     text-overflow:inherit;
 }
 table {
+    font-family: 'Overpass', monospace;
     border: 1px solid black;
     width: 100%;
     border-collapse: collapse;
 }
 td {
+    font-family: 'Overpass Mono', monospace;
     border: 1PX solid black;
 }
 th {
+    font-family: 'Overpass';
     background-color: #04AA6D;
     color: white;
 }
@@ -30,6 +39,7 @@ th button:hover {
     border: 2px solid black;
 }
 tr {
+    font-family: 'Overpass-Mono';
     background-color: lightblue;
 }
 tr:hover {
@@ -53,6 +63,19 @@ label {
     color: black;
     font-weight: bolder;
 }
-a {
-    background-color: blue;
+
+a img {
+    border: 1px solid black;
+    
+}
+a img:hover {
+    background-color: aquamarine;
+}
+.btn_info {
+    height: 24px;
+}
+.btn_info label {
+    font-family: 'Overpass', sans-serif;
+    font-size: 20px;
+    vertical-align:top
 }
