@@ -12,21 +12,33 @@ template_dir = os.path.join(script_directory, 'pages')
 laps_templ = os.path.join(template_dir, 'laps.html')
 index_templ = os.path.join(template_dir, 'index.html')
 content_templ = os.path.join(template_dir, 'content.html')
-css = os.path.join(template_dir,'style.css')
+css = os.path.join(template_dir, 'style.css')
 
 # Connect to the database using the absolute file path
 conn = sqlite3.connect(db_file_path)
 conn.close()
 print(IPAddr)
-#Index
+
+
+# Index
 @route("/")
 def index():
-    return template(index_templ)
+    return static_file(index_templ, root=template_dir)
+
+
 # Static Files (CSS)
 @route("/pages/<filename:path>")
 def static(filename):
     return static_file(filename, root=template_dir)
-#Lap Browser
+
+
+@route("/pages/images/<filename:path>")
+def static(filename):
+    return static_file(filename, root=images_dir)
+
+
+# Lap Browser
+# Lap Browser
 @route('/laps')
 def laps():
     conn = sqlite3.connect(db_file_path)
@@ -34,10 +46,10 @@ def laps():
     c.execute("SELECT DISTINCT track FROM laps")
     tracks = [row[0] for row in c.fetchall()]
     c.close()
-    
+
     track = request.query.get('track')
     sort_by = request.query.get('sort_by')
-    
+
     query = "SELECT lap_time, track, car_model, driver FROM laps"
     params = ()
     c = conn.cursor()
@@ -53,17 +65,25 @@ def laps():
     c.execute(query, params)
     result = c.fetchall()
     c.close()
-    
-    output = template(laps_templ,rows=result, tracks=tracks, request=request)
+
+    output = template(laps_templ, rows=result, tracks=tracks, request=request)
     return output
-#Run
+
+
+# Run
 @route('/more')
 def more():
     return ("More Has Not Been Configured <a href='/'>Back</a>")
+
+
 @route('/media')
 def media():
     return ("More Has Not Been Configured <a href='/'>Back</a>")
+
+
 @route('/content')
 def content():
     return ("More Has Not Been Configured <a href='/'>Back</a>")
-run(host=IPAddr,port=5159,reloader=True,debug=True)
+
+
+run(host=IPAddr, port=5159, reloader=True, debug=True)
