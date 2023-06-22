@@ -23,7 +23,7 @@ print(IPAddr)
 # Index
 @route("/")
 def index():
-    return static_file(index_templ, root=template_dir)
+    return template(index_templ)
 
 
 # Static Files (CSS)
@@ -31,10 +31,6 @@ def index():
 def static(filename):
     return static_file(filename, root=template_dir)
 
-
-@route("/pages/images/<filename:path>")
-def static(filename):
-    return static_file(filename, root=images_dir)
 
 
 # Lap Browser

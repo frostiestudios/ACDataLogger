@@ -20,3 +20,4 @@ Start-Process -Wait -FilePath $installerPath -ArgumentList "/quiet", "PrependPat
 # Clean up the installer
 Remove-Item -Path $installerPath
 Write-Output "Python Installed"
+Write-Progress 
