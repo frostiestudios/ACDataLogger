@@ -34,8 +34,11 @@ def store_data(car_model, track, last_lap_time,driver):
     conn.close()
 
 def update_labels():
-    global car_model, track, last_time, best_time, driver, speed, gear, rpm, current_time, distance, laps
-
+    global car_model
+    global track
+    global last_time
+    global best_time, driver, speed, gear, rpm, current_time, distance, laps
+    
 
     asm = accSharedMemory()
     sm = asm.read_shared_memory()
@@ -108,7 +111,6 @@ gear = ""
 rpm = ""
 laps = ""
 distance = ""
-
 app = gui("sharedmemorymanager")
 app.addLabel("SharedMemoryManager")
 
