@@ -38,12 +38,14 @@ def update_labels():
     global track
     global last_time
     global best_time, driver, speed, gear, rpm, current_time, distance, laps
-    
+    global car_cords
 
     asm = accSharedMemory()
     sm = asm.read_shared_memory()
 
     if sm is not None:
+        car_cords=sm.Graphics.car_coordinates
+        print(car_cords)
         car_model = sm.Static.car_model
         track = sm.Static.track
         print(car_model)
@@ -111,6 +113,7 @@ gear = ""
 rpm = ""
 laps = ""
 distance = ""
+car_cords = ""
 app = gui("sharedmemorymanager")
 app.addLabel("SharedMemoryManager")
 

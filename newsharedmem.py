@@ -35,7 +35,6 @@ def store_data(car_model, track, last_lap_time,driver):
     conn.close()
 
 def update():
-    
     asm = accSharedMemory()
     sm = asm.read_shared_memory()
     
@@ -53,7 +52,8 @@ def style():
     dpg.show_style_editor()
 def docs():
     dpg.show_documentation()
-    
+def fonts():
+    dpg.show_font_manager()
 #Data Variables
 car_model = ""
 track = ""
@@ -62,11 +62,12 @@ with dpg.viewport_menu_bar():
     with dpg.menu(label="Config"):
         dpg.add_menu_item(label="Show Style Editor",callback=style)
         dpg.add_menu_item(label="Documentation",callback=docs)
+        dpg.add_menu_item(label="Font Manager",callback=fonts)
     with dpg.menu(label="windows"):
         dpg.add_menu_item(label="item1")
 with dpg.window(label="1"):
     dpg.add_text("Assetto Corsa Data Logger")
-
+    dpg.add_input_text()
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.start_dearpygui()
