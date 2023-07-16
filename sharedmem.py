@@ -2,6 +2,8 @@ from pyaccsharedmemory import accSharedMemory
 from appJar import gui
 import sqlite3
 import os
+import datetime
+
 
 current_directory = os.getcwd()
 print(current_directory)
@@ -10,6 +12,8 @@ db_file_path = os.path.join(script_directory, 'sharedmemmanager.db')
 conn = sqlite3.connect(db_file_path)
 conn.close()
 
+current_date = datetime.date.today()
+date = current_date.strftime("%m-%d-%y")
 
 def format_time(time):
     minutes = int(time // 60000)
@@ -25,11 +29,11 @@ def format_text(data):
         return str(data, 'utf-8').rstrip('\x00')
     return str(data).rstrip('\x00')
 
-def store_data(car_model, track, last_lap_time,driver):
+def store_data(car_model, track, last_lap_time,driver,date):
     conn = sqlite3.connect(db_file_path)
     c = conn.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS laps (lap_time TEXT, track TEXT, car_model TEXT)")
-    c.execute("INSERT INTO laps (lap_time, track, car_model, driver) VALUES (?, ?, ?, ?)",(format_text(last_lap_time), format_text(track), format_text(car_model), format_text(driver)))
+    c.execute("CREATE TABLE IF NOT EXISTS laps (lap_time TEXT, track TEXT, car_model TEXT, date TEXT)")
+    c.execute("INSERT INTO laps (lap_time, track, car_model, driver, date) VALUES (?, ?, ?, ?, ?)",(format_text(last_lap_time), format_text(track), format_text(car_model), format_text(driver),date))
     conn.commit()
     conn.close()
 
@@ -45,7 +49,14 @@ def update_labels():
 
     if sm is not None:
         car_cords=sm.Graphics.car_coordinates
-        print(car_cords)
+        car_cords_x = car_cords[0].x
+        car_cords_y = car_cords[0].y
+        car_cords_z = car_cords[0].z
+        
+        
+        print(f'x:{car_cords_x}')
+        print(f'y:{car_cords_y}')
+        print(f'z:{car_cords_z}')
         car_model = sm.Static.car_model
         track = sm.Static.track
         print(car_model)
@@ -53,7 +64,7 @@ def update_labels():
         new_laps = sm.Graphics.completed_lap   
         if new_laps != laps:
             last_lap_time = format_time(sm.Graphics.last_time)
-            store_data(car_model,track,last_lap_time, driver)
+            store_data(car_model,track,last_lap_time, driver,date)
         laps = new_laps     
         distance = sm.Graphics.distance_traveled
         valid_lap = sm.Graphics.is_valid_lap
@@ -64,16 +75,11 @@ def update_labels():
         best_time = format_time(sm.Graphics.best_time)
         current_time = format_time(sm.Graphics.current_time)
         delta_time = sm.Graphics.delta_lap_time
-        delta_positive = sm.Graphics.is_delta_positive
-        if delta_positive == False:
-            delta_sign = "-"
-            app.setLabelBg("delta_time","red")
-        else:
-            delta_sign = "+"
-            app.setLabelBg("delta_time","green")
         
+        
+
         print(delta_time)
-        print(delta_positive)
+
 
         driver = sm.Static.player_nick
         speed = format_speed(sm.Physics.speed_kmh)
@@ -82,7 +88,7 @@ def update_labels():
         #LAP COUNT
 
         asm.close()
-    
+        print(date)
     #Basic Info
     app.setLabel("car_model", f"Car Model: {car_model}")
     app.setLabel("track", f"Track: {track}")
@@ -90,7 +96,6 @@ def update_labels():
     app.setLabel("last_time", f"Last Time: {last_time}")
     app.setLabel("best_time", f"Best Time: {best_time}")
     app.setLabel("current_time",f'current_time:{current_time}')
-    app.setLabel("delta_time",f"delta:{delta_sign}{delta_time}")
     #Driver Info
     app.setLabel("car_count", f"Car Count: {driver}")
     app.setLabel("speed",f"{speed} KPH")
@@ -98,6 +103,7 @@ def update_labels():
     #Distance Info
     app.setLabel("laps",f"laps:{laps}")
     app.setLabel("distance",f"{distance}")
+    
     #UPDATE LABELS
     app.after(1000, update_labels)
 
@@ -144,6 +150,10 @@ app.stopLabelFrame()
 app.startLabelFrame("Laps",0,2)
 app.addLabel("laps",laps)
 app.addLabel("distance",distance)
+app.stopLabelFrame()
+
+app.startLabelFrame("Date",1,2)
+app.addLabel("date",date)
 app.stopLabelFrame()
 app.after(0, update_labels)
 app.go()

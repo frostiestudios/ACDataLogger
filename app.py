@@ -7,6 +7,8 @@ hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname)
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
+
+
 db_file_path = os.path.join(script_directory, 'sharedmemmanager.db')
 template_dir = os.path.join(script_directory, 'pages')
 laps_templ = os.path.join(template_dir, 'laps.html')
@@ -43,17 +45,17 @@ def laps():
     tracks = [row[0] for row in c.fetchall()]
     c.close()
 
-    track = request.query.get('track')
-    sort_by = request.query.get('sort_by')
+    track = request.query.get('track') # type: ignore
+    sort_by = request.query.get('sort_by') # type: ignore
 
-    query = "SELECT lap_time, track, car_model, driver FROM laps"
+    query = "SELECT lap_time, track, car_model, driver, date FROM laps"
     params = ()
     c = conn.cursor()
     if track:
-        query = "SELECT lap_time, track, car_model, driver FROM laps WHERE track=?"
+        query = "SELECT lap_time, track, car_model, driver, date FROM laps WHERE track=?"
         params = (track,)
     else:
-        query = "SELECT lap_time, track, car_model, driver FROM laps"
+        query = "SELECT lap_time, track, car_model, driver, date FROM laps"
 
     if sort_by:
         query += f" ORDER BY {sort_by}"
@@ -67,14 +69,17 @@ def laps():
 
 
 # Run
-@route('/more')
+@route('/map')
 def more():
     return ("More Has Not Been Configured <a href='/'>Back</a>")
 
 
-@route('/media')
-def media():
-    return ("More Has Not Been Configured <a href='/'>Back</a>")
+@route('/dashboard')
+def dash():
+    current_time = sharedmem.current_time
+    return template('./pages/dash.html',
+                    current_time=current_time
+                    )
 
 
 @route('/content')

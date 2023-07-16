@@ -23,7 +23,7 @@ table {
     border-collapse: collapse;
 }
 td {
-    font-family: 'Overpass Mono', monospace;
+    font-family: 'Overpass', monospace;
     border: 1PX solid black;
 }
 th {

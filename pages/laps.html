@@ -8,7 +8,7 @@
     <h1>Lap Records</h1>
     <p>Welcome to ac shared memory. This page shows you your completed lap times</p>
     <a href="/"><img src="/pages/images/left.png"></a>
-
+    <a href="/laps">Reload</a>
     <form action="/laps" method="GET" class="filter">
         <label for="track-select">Select Track:</label>
         <select id="track-select" name="track">
@@ -41,6 +41,7 @@
                 </form>
             </th>
             <th>Driver</th>
+            <th>Date</th>
         </tr>
         %for row in rows:
             <tr>
@@ -48,6 +49,7 @@
                 <td>{{row[1]}}</td>
                 <td>{{row[2]}}</td>
                 <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>
             </tr>
         %end
     </table>
