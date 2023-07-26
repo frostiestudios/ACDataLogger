@@ -28,7 +28,12 @@ def format_text(data):
     if isinstance(data, bytes):
         return str(data, 'utf-8').rstrip('\x00')
     return str(data).rstrip('\x00')
-
+def store_data_track(track):
+    conn = sqlite3.connect(db_file_path)
+    c=conn.cursor()
+    c.execute("INSERT INTO tracks (track) VALUES (?)",format_text(track))
+    conn.commit()
+    conn.close()
 def store_data(car_model, track, last_lap_time,driver,date):
     conn = sqlite3.connect(db_file_path)
     c = conn.cursor()
@@ -58,6 +63,7 @@ def update_labels():
         print(f'y:{car_cords_y}')
         print(f'z:{car_cords_z}')
         car_model = sm.Static.car_model
+        new_track = sm.Static.track
         track = sm.Static.track
         print(car_model)
         #LAPS / RANGE
@@ -65,6 +71,9 @@ def update_labels():
         if new_laps != laps:
             last_lap_time = format_time(sm.Graphics.last_time)
             store_data(car_model,track,last_lap_time, driver,date)
+        if new_track != track:
+            store_data_track(new_track)
+            track = new_track
         laps = new_laps     
         distance = sm.Graphics.distance_traveled
         valid_lap = sm.Graphics.is_valid_lap
