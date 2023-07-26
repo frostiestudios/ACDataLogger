@@ -3,17 +3,20 @@ from appJar import gui
 import sqlite3
 import os
 import datetime
-
+import time
+import csv
 
 current_directory = os.getcwd()
 print(current_directory)
 script_directory = os.path.dirname(os.path.abspath(__file__))
 db_file_path = os.path.join(script_directory, 'sharedmemmanager.db')
+csv_file_path = os.path.join(script_directory, 'map/traces.csv')
 conn = sqlite3.connect(db_file_path)
 conn.close()
 
 current_date = datetime.date.today()
 date = current_date.strftime("%m-%d-%y")
+
 
 def format_time(time):
     minutes = int(time // 60000)
@@ -41,13 +44,17 @@ def store_data(car_model, track, last_lap_time,driver,date):
     c.execute("INSERT INTO laps (lap_time, track, car_model, driver, date) VALUES (?, ?, ?, ?, ?)",(format_text(last_lap_time), format_text(track), format_text(car_model), format_text(driver),date))
     conn.commit()
     conn.close()
-
+def add_nav_csv(x,y):
+    with open(csv_file_path,'a',newline='') as csvnav:
+        csv_writer = csv.writer(csvnav)
+        csv_writer.writerow([time.time(),x,y])
 def update_labels():
     global car_model
     global track
     global last_time
     global best_time, driver, speed, gear, rpm, current_time, distance, laps
     global car_cords
+    global prev_cords
 
     asm = accSharedMemory()
     sm = asm.read_shared_memory()
@@ -62,8 +69,12 @@ def update_labels():
         print(f'x:{car_cords_x}')
         print(f'y:{car_cords_y}')
         print(f'z:{car_cords_z}')
+        
+        if (car_cords_x, car_cords_y) != prev_cords:
+            add_nav_csv(car_cords_x, car_cords_y)
+            prev_cords = (car_cords_x, car_cords_y)
+            
         car_model = sm.Static.car_model
-        new_track = sm.Static.track
         track = sm.Static.track
         print(car_model)
         #LAPS / RANGE
@@ -71,9 +82,7 @@ def update_labels():
         if new_laps != laps:
             last_lap_time = format_time(sm.Graphics.last_time)
             store_data(car_model,track,last_lap_time, driver,date)
-        if new_track != track:
-            store_data_track(new_track)
-            track = new_track
+        
         laps = new_laps     
         distance = sm.Graphics.distance_traveled
         valid_lap = sm.Graphics.is_valid_lap
@@ -129,6 +138,7 @@ rpm = ""
 laps = ""
 distance = ""
 car_cords = ""
+prev_cords = None
 app = gui("sharedmemorymanager")
 app.addLabel("SharedMemoryManager")
 
