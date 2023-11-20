@@ -25,7 +25,8 @@ print(IPAddr)
 # Index
 @route("/")
 def index():
-    return template(index_templ)
+    return template(index_templ,
+                    addr=IPAddr)
 
 
 # Static Files (CSS)
@@ -86,5 +87,8 @@ def dash():
 def content():
     return ("More Has Not Been Configured <a href='/'>Back</a>")
 
+@route('/media')
+def media():
+    return template('./pages/media.html')
 
 run(host=IPAddr, port=5159, reloader=True, debug=True)
